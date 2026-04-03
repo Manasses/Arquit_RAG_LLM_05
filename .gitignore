@@ -43,3 +43,8 @@ desktop.ini
 *.log
 tmp/
 temp/
+
+# --- Banco de Dados Vetorial (ChromaDB) ---
+chroma_db_prompt/
+*.bin
+*.vdb
