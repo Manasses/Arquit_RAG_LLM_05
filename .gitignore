@@ -1,0 +1,45 @@
+# --- Python & Ambientes Virtuais ---
+.venv/
+venv/
+ENV/
+env/
+bin/
+lib/
+include/
+share/
+build/
+dist/
+*.pyc
+*.pyo
+*.pyd
+__pycache__/
+
+# --- Variáveis de Ambiente (Segurança) ---
+.env
+.flaskenv
+
+# --- VS Code & IDEs ---
+.vscode/
+*.code-workspace
+.idea/
+.history/
+
+# --- Banco de Dados Vetorial (ChromaDB / FAISS) ---
+# Ignoramos as pastas onde o banco salva os dados locais
+chroma/
+faiss_index/
+*.db
+*.sqlite3
+
+# --- Sistema Operacional (Windows/macOS) ---
+Thumbs.db
+desktop.ini
+.DS_Store
+
+# --- Jupyter Notebook ---
+.ipynb_checkpoints
+
+# --- Log & Arquivos Temporários ---
+*.log
+tmp/
+temp/
