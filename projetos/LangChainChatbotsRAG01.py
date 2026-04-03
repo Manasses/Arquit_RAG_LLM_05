@@ -86,8 +86,9 @@ while True:
 
     try:
         print("🔍 Pesquisando no documento...")
+
         # Chamada da cadeia
-        
+        resposta = rag_chain.invoke(user_input)        
         
         print(f"\n🤖 RESPOSTA:\n{resposta}")
         
