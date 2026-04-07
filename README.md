@@ -1,58 +1,74 @@
-# Arquitetura RAG com LLMs Locais 🤖🚀
+# 🤖 Arquitetura RAG Avançada com LLMs Locais
 
-Este repositório contém o desenvolvimento prático do curso de construção de **Agentes de IA com Python**, focado em arquiteturas **RAG (Retrieval-Augmented Generation)** utilizando modelos de linguagem (LLMs) executados localmente.
-
----
-
-## 📚 Tópicos do Curso
-
-Neste treinamento, exploramos o ciclo completo de um Especialista em IA:
-
-* **Fundamentos de LLM:** Compreensão de Transformers e sistemas generativos.
-* **Estratégias Anti-Alucinação:** Integração de conhecimento externo para respostas precisas.
-* **Personalização:** Comparação entre Fine-tuning e RAG.
-* **Embeddings & Similaridade:** Transformação de documentos em vetores e busca por similaridade de cosseno.
-* **Processamento de Documentos:** Técnicas de *chunking*, *overlapping* e gestão de metadados.
-* **Pipelines de RAG:** Implementação de fluxos para documentos estruturados e não estruturados.
-* **Vector Stores:** Uso de FAISS e ChromaDB para indexação eficiente.
-* **Agentes LangChain:** Construção de interfaces conversacionais inteligentes.
-* **Re-rank:** Otimização da relevância das informações recuperadas.
+Este repositório contém o desenvolvimento prático focado em arquiteturas **RAG (Retrieval-Augmented Generation)** para a construção de **Agentes de IA**. O foco principal é a implementação de pipelines de alta precisão utilizando modelos de linguagem executados 100% localmente.
 
 ---
 
-## 🦙 Configuração do Ollama (LLM Local)
+## 💻 Especificações do Ambiente de Desenvolvimento
+O projeto foi otimizado para um ambiente de alto desempenho em memória, visando privacidade e baixo custo operacional.
+* **Sistema Operacional:** Windows 11
+* **Hardware:** Intel Core i7-1255U (12ª Geração) | **40 GB RAM**
+* **Runtime:** Python 3.13.5
+* **IDE:** VS Code com ambiente virtual (`.venv`)
+* **Engine de Inferência:** Ollama (Processamento focado em CPU/RAM)
 
-Para este projeto, utilizamos o **Ollama** para garantir privacidade, baixo custo e execução 100% local.
+---
+
+## 📚 Tópicos e Competências Desenvolvidas
+
+Neste repositório, exploramos o ciclo completo de implementação de um sistema de IA Generativa:
+
+* **Estratégias Anti-Alucinação:** Integração de bases de conhecimento externas (PDFs) para garantir respostas baseadas em fatos.
+* **Embeddings & Similaridade:** Uso de modelos especializados para transformação de texto em vetores e busca por similaridade de cosseno.
+* **Gestão de Documentos:** Técnicas de *chunking* (divisão de texto), *overlapping* e enriquecimento semântico via metadados.
+* **Pipelines de RAG:** Construção de fluxos declarativos utilizando **LangChain Expression Language (LCEL)**.
+* **Vector Stores:** Indexação e persistência eficiente utilizando **ChromaDB**.
+* **Re-rank Semântico:** Otimização da relevância das informações recuperadas para evitar a perda de contexto crítico.
+
+---
+
+## 📂 Projetos Implementados
+
+### 1. RAG Foundation (Agente de Documentos)
+Implementação da pipeline base de RAG. Focado no fluxo de extração de PDFs, criação de vetores e busca direta.
+* **Destaque:** Lógica de persistência que verifica a existência do banco no SSD antes de reprocessar o documento, economizando recursos de CPU.
+
+### 2. Agente Farmacêutico (Multidocumentos & Metadados)
+Evolução para o tratamento de múltiplos arquivos simultâneos (Bulas de medicamentos).
+* **Destaque:** Enriquecimento de metadados (`medicamento` e `categoria`) permitindo que o agente identifique exatamente de qual fonte a informação foi extraída, aumentando a confiabilidade técnica.
+
+### 3. Agente de RH Corporativo (RAG + Re-ranking + Streamlit)
+O projeto mais sofisticado, focado em políticas internas de RH (Férias, Home Office, Código de Conduta).
+* **Inovação - Re-rank:** Implementação de um estágio duplo de recuperação. O sistema busca os 8 trechos mais próximos via vetores e utiliza a LLM para reordenar e selecionar os 3 mais relevantes.
+* **Interface:** UI dinâmica desenvolvida em **Streamlit** com suporte a *streaming* de resposta em tempo real.
+
+### 4. Notas Técnicas e Performance
+* **Chunk Strategy:** Devido aos limites de contexto do modelo de embedding, utilizamos chunk_size=500 com chunk_overlap=100.
+* **LCEL Architecture:** O uso de Pipes (|) no LangChain garante que o código seja modular e compatível com as versões mais recentes do Python.
+* **Cache de Memória:** O uso de @st.cache_resource no Streamlit aproveita os 40GB de RAM do sistema para manter o banco vetorial carregado, reduzindo o tempo de resposta entre perguntas.
+
+---
+
+## 🦙 Configuração do Ollama
+
+Para garantir a privacidade dos dados, todos os modelos rodam localmente via **Ollama**.
 
 ### 1. Instalação
-* Faça o download em: [ollama.com](https://ollama.com/download/windows)
-* Após instalar, certifique-se de que o ícone do Ollama está ativo na bandeja do sistema.
+* Download em: [ollama.com](https://ollama.com)
 
 ### 2. Modelos Utilizados
-Abra o seu terminal (PowerShell) e execute os seguintes comandos para baixar os modelos necessários:
+```bash
+# Modelo principal para conversação e raciocínio (Llama 3.2 3B)
+ollama pull llama3.2:3b
 
-* **Llama 3.2 (3B):** Modelo principal para conversação e raciocínio.
-    ```bash
-    ollama pull llama3.2:3b
-    ```
-* **mxbai-embed-large:** Modelo especializado em gerar Embeddings de alta qualidade.
-    ```bash
-    ollama pull mxbai-embed-large
-    ```
+# Modelo especializado em Embeddings de alta qualidade
+ollama pull mxbai-embed-large
 
----
-
-## 🐍 Configuração do Ambiente Python (VS Code)
-
-O projeto foi desenvolvido em **Windows 11** com foco em isolamento de dependências.
-Especificações de Hardware (Referência):
-CPU: Intel Core i7-1255U (12ª Geração)
-RAM: 40 GB (Foco em processamento via CPU/RAM devido à GPU integrada).
-
-
-### 1. Máquina Virtual (venv)
-Para manter o ambiente limpo, criamos uma venv na raiz do projeto:
-```powershell
+### 3. Criação e Ativação da Venv
+```bash
 python -m venv venv
 .\venv\Scripts\activate
 
+### 4. Criação e Ativação da Venv
+```bash
+pip install langchain-ollama langchain-community langchain-core chromadb pypdf streamlit
